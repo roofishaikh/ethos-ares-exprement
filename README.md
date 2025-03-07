@@ -1,0 +1,162 @@
+# ETHOS - EHR foundation model
+
+This repository contains the experiments and implementations used in our
+paper ([preprint](https://arxiv.org/abs/2502.0612)). It builds on our
+previous work on EHR foundation models by completely
+reimplementing [ETHOS](https://www.nature.com/articles/s41746-024-01235-0) (formerly
+available [here](https://github.com/ipolharvard/ethos-paper))
+to achieve higher performance, improved usability, robustness, and further expand of our work.
+
+## Features
+
+- In this release, we demonstrate that ETHOS outperforms the baselines presented in our paper and
+  introduce ARES, a method for explaining patient health trajectories. We test ETHOS on the MIMIC-IV
+  with the MIMIC-IV-ED extension dataset on all most common tasks in the domain.
+- ETHOS is not a natural language model. It uses a specialized language designed to succinctly
+  describe patient health events, which we believe helps the model learn better representations and
+  token relationships.
+- A key feature of ETHOS is zero-shot prediction, where known patient health trajectories are
+  extrapolated to generate future patient health trajectories (fPHT). This process is repeated to
+  derive probability estimates.
+- This implementation uses [MEDS](https://github.com/Medical-Event-Data-Standard/meds) as an
+  intermediate data representation.
+- We provide a full pipeline that includes tokenization, training, and inference.
+- We invite everyone to a discussion in the Issues section of this repository.
+
+<p align="center">
+<a href="https://www.nature.com/articles/s41746-024-01235-0">
+  <img src="./figures/ethos_ares_workflow.png" width="70%" alt="ETHOS-ARES workflow">
+</a>
+</p>
+
+## Paper reproducibility
+
+We provide the complete code necessary to reproduce all experiments presented in the paper.
+Additionally, precomputed components of our experiments are available on
+[Google Drive](https://drive.google.com/drive/folders/1BU0N6lKjNCr6nDF4QB-6fTYmAPZtw9sG?usp=sharing).
+Once unpacked in the project's root directory, these files will allow the code to work out of the
+box:
+
+1. `data.tar.gz` - Tokenized MIMIC-IV 2.2 with MIMIC-IV-ED dataset. It also includes the MEDS
+   metadata, that defines patient split.
+2. `model.tar.gz` - Pretrained model used for inference (includes two variants: "best" and "recent",
+   the latter referring to the model with the best validation loss). We used "recent" in the paper.
+3. `results.tar.gz` - Inference results on the test set for both the tasks included in the paper and
+   additional tasks, along with the baseline results. If present, allows creating all the plots
+   included in the paper in this notebook: `notebooks/figures.ipynb`.
+
+## Workflow
+
+Package entry points:
+
+1. `ethos_tokenize` - Example in `scripts/run_tokenization.sh`.
+2. `ethos_train` - Example in `scripts/run_training.sh`.
+3. `ethos_infer` - Example in `scripts/run_inference.sh`.
+
+## Installation
+
+[Optional] We strongly encourage the use of a virtual environment, for example, Conda:
+To create a new conda env:
+
+```bash
+conda create --name ethos python=3.12
+conda activate ethos
+```
+
+Fetch the project and set it up in the development mode (`-e`) and install all necessary
+dependencies for running notebooks and scripts by executing:
+
+```bash
+git clone https://github.com/ipolharvard/ethos-ares
+cd ethos-ares
+pip install -e .[jupyter]
+```
+
+## ETHOS tokenization guide
+
+ETHOS tokenization uses an intermediate format
+
+- [MEDS](https://github.com/Medical-Event-Data-Standard/meds), extracted via
+  the [MEDS_transforms](https://github.com/mmcdermott/MEDS_transforms) pipeline. Scripts for running
+  this pipeline are located in `scripts/meds`.
+
+Below is an example command to run the extraction (where `$suffix` should be "ed" or empty). In case
+of `ed`,
+it requires the MIMIC-IV-ED extension to be present in the input directory:
+
+```bash
+export N_WORKERS=14
+
+bash run.sh \
+	"$input_dir" \
+	"$output_dir/mimic-premeds$suffix" \
+	"$output_dir/mimic-meds$suffix" \
+	"$suffix"
+```
+
+In the [paper](https://arxiv.org/abs/2502.06124), data is split into 90% training and 10% testing.
+It can be adjusted in the `scripts/meds/mimic/configs/extract_MIMIC.yaml` file. Note, that keys:
+`train`, `tuning` and `held_out` have to be always present in the config file, but can be set to
+null.
+
+```yaml
+split_and_shard_subjects:
+    ...
+    split_fracs:
+        train: 0.9
+        test: 0.1
+        tuning: null
+        held_out: null
+```
+
+Once data extraction is complete, you can tokenize using the `ethos_tokenize` command, demonstrated
+in `scripts/run_tokenization.sh`. Ensure the file hierarchy matches what the script expects, or
+modify the script accordingly before running.
+
+## Cite us
+
+If you use ETHOS in your research, please cite our work:
+
+Renc, P., Grzeszczyk, M. K., Oufattole, N., Goode, D., Jia, Y., Bieganski, S., ... & Sitek, A. (
+2025).
+Foundation Model of Electronic Medical Records for Adaptive Risk Estimation. arXiv preprint arXiv:
+2502.06124.
+
+```
+@misc{renc2025foundationmodelelectronicmedical,
+      title={Foundation Model of Electronic Medical Records for Adaptive Risk Estimation},
+      author={Pawel Renc and Michal K. Grzeszczyk and Nassim Oufattole and Deirdre Goode and Yugang Jia and
+      Szymon Bieganski and Matthew B. A. McDermott and Jaroslaw Was and Anthony E. Samir and Jonathan W.
+      Cunningham and David W. Bates and Arkadiusz Sitek},
+      year={2025},
+      eprint={2502.06124},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2502.06124},
+}
+```
+
+Pawel Renc, Yugang Jia, Anthony E Samir, Jaroslaw Was, Quanzheng Li, David W Bates, Arkadiusz Sitek,
+"Zero shot health trajectory prediction using transformer" npj Digital Medicine, 19 Sep 2024
+
+BibTeX:
+
+```
+@article{renc_zero_2024,
+	title = {Zero shot health trajectory prediction using transformer},
+	volume = {7},
+	copyright = {2024 The Author(s)},
+	issn = {2398-6352},
+	url = {https://www.nature.com/articles/s41746-024-01235-0},
+	doi = {10.1038/s41746-024-01235-0},
+	abstract = {Integrating modern machine learning and clinical decision-making has great promise for mitigating healthcare’s increasing cost and complexity. We introduce the Enhanced Transformer for Health Outcome Simulation (ETHOS), a novel application of the transformer deep-learning architecture for analyzing high-dimensional, heterogeneous, and episodic health data. ETHOS is trained using Patient Health Timelines (PHTs)—detailed, tokenized records of health events—to predict future health trajectories, leveraging a zero-shot learning approach. ETHOS represents a significant advancement in foundation model development for healthcare analytics, eliminating the need for labeled data and model fine-tuning. Its ability to simulate various treatment pathways and consider patient-specific factors positions ETHOS as a tool for care optimization and addressing biases in healthcare delivery. Future developments will expand ETHOS’ capabilities to incorporate a wider range of data types and data sources. Our work demonstrates a pathway toward accelerated AI development and deployment in healthcare.},
+	language = {en},
+	number = {1},
+	urldate = {2024-09-24},
+	journal = {npj Digital Medicine},
+	author = {Renc, Pawel and Jia, Yugang and Samir, Anthony E. and Was, Jaroslaw and Li, Quanzheng and Bates, David W. and Sitek, Arkadiusz},
+	month = sep,
+	year = {2024},
+	pages = {1--10},
+}
+```
