@@ -1,7 +1,8 @@
 # ETHOS - EHR foundation model
 
-This repository contains the experiments and implementations used in our
-paper ([preprint](https://arxiv.org/abs/2502.0612)). It builds on our
+This repository implements Adaptive Risk Estimation System (ARES) for Hospital Mortality, ICU
+Admission, Prolonged Length of Stay, and Composite (HM+IU+PLoS). In addition, it contains all the
+experiments conducted in our paper ([preprint](https://arxiv.org/abs/2502.0612)). It builds on our
 previous work on EHR foundation models by completely
 reimplementing [ETHOS](https://www.nature.com/articles/s41746-024-01235-0) (formerly
 available [here](https://github.com/ipolharvard/ethos-paper))
