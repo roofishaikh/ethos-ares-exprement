@@ -6,7 +6,7 @@ experiments conducted in our paper ([preprint](https://arxiv.org/abs/2502.0612))
 previous work on EHR foundation models by completely
 reimplementing [ETHOS](https://www.nature.com/articles/s41746-024-01235-0) (formerly
 available [here](https://github.com/ipolharvard/ethos-paper))
-to achieve higher performance, improved usability, robustness, and further expand of our work.
+to achieve higher performance, improved usability, robustness, and further expand our work.
 
 ## Features
 
