@@ -13,12 +13,14 @@ to achieve higher performance, improved usability, robustness, and further expan
 - In this release, we demonstrate that ETHOS outperforms the baselines presented in our paper and
   introduce ARES, a method for explaining patient health trajectories. We test ETHOS on the MIMIC-IV
   with the MIMIC-IV-ED extension dataset on all most common tasks in the domain.
-- ETHOS is not a natural language model. It uses a specialized language designed to succinctly
-  describe patient health events, which we believe helps the model learn better representations and
-  token relationships.
 - A key feature of ETHOS is zero-shot prediction, where known patient health trajectories are
   extrapolated to generate future patient health trajectories (fPHT). This process is repeated to
   derive probability estimates.
+- The current main model architecture that we use is GPT2 (no bias). Feel free to experiment
+  with architectures specifically suited for EMR.
+- ETHOS is not a natural language model. It uses a specialized language designed to succinctly
+  describe patient health events, which we believe helps the model learn better representations and
+  token relationships.
 - This implementation uses [MEDS](https://github.com/Medical-Event-Data-Standard/meds) as an
   intermediate data representation.
 - We provide a full pipeline that includes tokenization, training, and inference.
