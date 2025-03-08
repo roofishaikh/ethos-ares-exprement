@@ -116,15 +116,16 @@ modify the script accordingly before running.
 
 ## Cite us
 
-If you use ETHOS in your research, please cite our work:
+If you use ETHOS or ETHOS-ARES in your research, please cite our work:
 
+[[1]](https://arxiv.org/abs/2502.06124)
 Renc, P., Grzeszczyk, M. K., Oufattole, N., Goode, D., Jia, Y., Bieganski, S., ... & Sitek, A. (
 2025).
 Foundation Model of Electronic Medical Records for Adaptive Risk Estimation. arXiv preprint arXiv:
 2502.06124.
 
 ```
-@misc{renc2025foundationmodelelectronicmedical,
+@misc{renc2025ehrfoundationmodel,
       title={Foundation Model of Electronic Medical Records for Adaptive Risk Estimation},
       author={Pawel Renc and Michal K. Grzeszczyk and Nassim Oufattole and Deirdre Goode and Yugang Jia and
       Szymon Bieganski and Matthew B. A. McDermott and Jaroslaw Was and Anthony E. Samir and Jonathan W.
@@ -137,10 +138,9 @@ Foundation Model of Electronic Medical Records for Adaptive Risk Estimation. arX
 }
 ```
 
+[[2]](https://www.nature.com/articles/s41746-024-01235-0)
 Pawel Renc, Yugang Jia, Anthony E Samir, Jaroslaw Was, Quanzheng Li, David W Bates, Arkadiusz Sitek,
 "Zero shot health trajectory prediction using transformer" npj Digital Medicine, 19 Sep 2024
-
-BibTeX:
 
 ```
 @article{renc_zero_2024,
