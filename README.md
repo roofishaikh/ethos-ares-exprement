@@ -77,15 +77,13 @@ pip install -e .[jupyter]
 
 ## ETHOS tokenization guide
 
-ETHOS tokenization uses an intermediate format
-
-- [MEDS](https://github.com/Medical-Event-Data-Standard/meds), extracted via
-  the [MEDS_transforms](https://github.com/mmcdermott/MEDS_transforms) pipeline. Scripts for running
-  this pipeline are located in `scripts/meds`.
+ETHOS tokenization uses an intermediate
+format [MEDS](https://github.com/Medical-Event-Data-Standard/meds), extracted via
+the [MEDS_transforms](https://github.com/mmcdermott/MEDS_transforms) pipeline. Scripts for running
+this pipeline are located in `scripts/meds`.
 
 Below is an example command to run the extraction (where `$suffix` should be "ed" or empty). In case
-of `ed`,
-it requires the MIMIC-IV-ED extension to be present in the input directory:
+of `ed`, it requires the MIMIC-IV-ED extension to be present in the input directory:
 
 ```bash
 export N_WORKERS=14
