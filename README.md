@@ -35,16 +35,17 @@ to achieve higher performance, improved usability, robustness, and further expan
 ## Paper reproducibility
 
 We provide the complete code necessary to reproduce all experiments presented in the paper.
-Additionally, precomputed components of our experiments are also available. Once unpacked in
-the project's root directory, these files will allow the code to work out of the box:
 
-1. `results.tar.gz` [[Google Drive]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=drive_link) - Inference results on the test set for both the tasks included in the paper and
-   additional tasks, along with the baseline results. If present, allows creating all the plots
-   included in the paper in this notebook: `notebooks/figures.ipynb`.
-2. `data` (pending upload on PhysioNet) - Tokenized MIMIC-IV 2.2 with MIMIC-IV-ED dataset. It also includes the MEDS
-   metadata, that defines patient split. 
-3. `model` (pending upload on PhysioNet) - Pretrained model used for inference (includes two variants: "best" and "recent",
-   the latter referring to the model with the best validation loss). We used "recent" in the paper.
+Additionally, all precomputed inference results of our experiments are available in
+`results.tar.gz` [\[Google Drive\]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=sharing).
+Once unpacked in the project's root directory, this file will allow generating
+all the figures in the paper using the notebooks: `notebooks/figures.ipynb` and
+`notebooks/trajectories.ipynb`. The test set on which these results were inferred can be easily
+recreated by running the MEDS extraction and tokenization pipelines (see below). MEDS guarantees the
+same data split if run on the same data with the same configuration (see `scripts/meds`).
+
+We do not publish the tokenized dataset or the pretrained model due to restrictions on MIMIC
+derivatives, and we conclude that these components are not suitable for publication on PhysioNet.
 
 ## Workflow
 
