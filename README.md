@@ -35,15 +35,16 @@ to achieve higher performance, improved usability, robustness, and further expan
 ## Paper reproducibility
 
 We provide the complete code necessary to reproduce all experiments presented in the paper.
-Additionally, precomputed components of our experiments are also available. Once unpacked in
-the project's root directory, these files will allow the code to work out of the box:
+Additionally, precomputed components of our experiments will be available on PhysioNet in accordance
+with the MIMIC derivatives guidelines. Once unpacked in the project's root directory, these files
+will allow the code to run out of the box:
 
-1. `results.tar.gz` [[Google Drive]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=drive_link) - Inference results on the test set for both the tasks included in the paper and
+1. `results` - Inference results on the test set for both the tasks included in the paper and
    additional tasks, along with the baseline results. If present, allows creating all the plots
    included in the paper in this notebook: `notebooks/figures.ipynb`.
-2. `data` (pending upload on PhysioNet) - Tokenized MIMIC-IV 2.2 with MIMIC-IV-ED dataset. It also includes the MEDS
-   metadata, that defines patient split. 
-3. `model` (pending upload on PhysioNet) - Pretrained model used for inference (includes two variants: "best" and "recent",
+2. `data` - Tokenized MIMIC-IV 2.2 with MIMIC-IV-ED dataset. It also includes the MEDS
+   metadata, that defines patient split.
+3. `model` - Pretrained model used for inference (includes two variants: "best" and "recent",
    the latter referring to the model with the best validation loss). We used "recent" in the paper.
 
 ## Workflow
