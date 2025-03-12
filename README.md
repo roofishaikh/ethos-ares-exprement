@@ -27,7 +27,7 @@ to achieve higher performance, improved usability, robustness, and further expan
 - We invite everyone to a discussion in the Issues section of this repository.
 
 <p align="center">
-<a href="https://www.nature.com/articles/s41746-024-01235-0">
+<a href="https://arxiv.org/abs/2502.0612">
   <img src="./figures/ethos_ares_workflow.png" width="70%" alt="ETHOS-ARES workflow">
 </a>
 </p>
@@ -37,7 +37,7 @@ to achieve higher performance, improved usability, robustness, and further expan
 We provide the complete code necessary to reproduce all experiments presented in the paper.
 
 Additionally, all precomputed inference results of our experiments are available in
-`results.tar.gz` [\[Google Drive\]](https://arxiv.org/abs/2502.0612).
+`results.tar.gz` [\[Google Drive\]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=sharing).
 Once unpacked in the project's root directory, this file will allow generating
 all the figures in the paper using the notebooks: `notebooks/figures.ipynb` and
 `notebooks/trajectories.ipynb`. The test set on which these results were inferred can be easily
