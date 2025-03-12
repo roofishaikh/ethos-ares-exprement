@@ -37,7 +37,7 @@ to achieve higher performance, improved usability, robustness, and further expan
 We provide the complete code necessary to reproduce all experiments presented in the paper.
 
 Additionally, all precomputed inference results of our experiments are available in
-`results.tar.gz` [\[Google Drive\]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=sharing).
+`results.tar.gz` [\[Google Drive (1.8GB)\]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=sharing).
 Once unpacked in the project's root directory, this file will allow generating
 all the figures in the paper using the notebooks: `notebooks/figures.ipynb` and
 `notebooks/trajectories.ipynb`. The test set on which these results were inferred can be easily
@@ -85,7 +85,7 @@ Below is an example command to run the extraction (where `$suffix` should be "ed
 of `ed`, it requires the MIMIC-IV-ED extension to be present in the input directory:
 
 ```bash
-export N_WORKERS=14
+export N_WORKERS=7
 
 bash run_mimic.sh \
     "$input_dir" \
@@ -93,6 +93,9 @@ bash run_mimic.sh \
     "$output_dir/mimic-meds$suffix" \
     "$suffix"
 ```
+
+Note, that using 7 workers for the tokenization requires around 250GB of RAM peak usage. You can
+reduce the memory requirement by reducing the number of workers.
 
 In the [paper](https://arxiv.org/abs/2502.06124), data is split into 90% training and 10% testing.
 It can be adjusted in the `scripts/meds/mimic/configs/extract_MIMIC.yaml` file. Note, that keys:
