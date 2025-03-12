@@ -27,7 +27,7 @@ to achieve higher performance, improved usability, robustness, and further expan
 - We invite everyone to a discussion in the Issues section of this repository.
 
 <p align="center">
-<a href="https://arxiv.org/abs/2502.0612">
+<a href="https://arxiv.org/abs/2502.06124">
   <img src="./figures/ethos_ares_workflow.png" width="70%" alt="ETHOS-ARES workflow">
 </a>
 </p>
