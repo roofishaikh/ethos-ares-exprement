@@ -14,7 +14,7 @@ function display_help() {
     echo "  MIMICIV_RAW_DIR                                Directory containing raw MIMIC-IV data files."
     echo "  MIMICIV_PREMEDS_DIR                            Output directory for pre-MEDS data."
     echo "  MIMICIV_MEDS_DIR                               Output directory for processed MEDS data."
-    echo "  (OPTIONAL) MIMIC extension                     Choose the extension to parse, available are 'ed' and 'cxr'."
+    echo "  (OPTIONAL) MIMIC extension                     Choose the extension to parse, available are '' or 'ed'."
     echo
     echo "Options:"
     echo "  -h, --help          Display this help message and exit."
@@ -74,16 +74,3 @@ fi
 echo "Running extraction pipeline."
 MEDS_transform-runner "pipeline_config_fp=$PIPELINE_CONFIG_FP" \
     stage_runner_fp=local_parallelism_runner.yaml
-
-#MEDS_extract-split_and_shard_subjects \
-#    --config-path "$(pwd)/configs" \
-#    --config-name "extract_MIMIC.yaml" \
-#    'hydra.searchpath=[pkg://MEDS_transforms.configs]' \
-#    --cfg job
-
-#MEDS_extract-shard_events
-#MEDS_extract-convert_to_sharded_events
-#MEDS_extract-merge_to_MEDS_cohort
-#MEDS_extract-extract_code_metadata
-#MEDS_extract-finalize_MEDS_metadata
-#MEDS_extract-finalize_MEDS_data

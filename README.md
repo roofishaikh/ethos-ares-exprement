@@ -37,7 +37,7 @@ to achieve higher performance, improved usability, robustness, and further expan
 We provide the complete code necessary to reproduce all experiments presented in the paper.
 
 Additionally, all precomputed inference results of our experiments are available in
-`results.tar.gz` [\[Google Drive\]](https://drive.google.com/file/d/1P2y70iZO3ZbwkROVCzJa7FCubQvk1qsE/view?usp=sharing).
+`results.tar.gz` [\[Google Drive\]](https://arxiv.org/abs/2502.0612).
 Once unpacked in the project's root directory, this file will allow generating
 all the figures in the paper using the notebooks: `notebooks/figures.ipynb` and
 `notebooks/trajectories.ipynb`. The test set on which these results were inferred can be easily
@@ -87,11 +87,11 @@ of `ed`, it requires the MIMIC-IV-ED extension to be present in the input direct
 ```bash
 export N_WORKERS=14
 
-bash run.sh \
-	"$input_dir" \
-	"$output_dir/mimic-premeds$suffix" \
-	"$output_dir/mimic-meds$suffix" \
-	"$suffix"
+bash run_mimic.sh \
+    "$input_dir" \
+    "$output_dir/mimic-premeds$suffix" \
+    "$output_dir/mimic-meds$suffix" \
+    "$suffix"
 ```
 
 In the [paper](https://arxiv.org/abs/2502.06124), data is split into 90% training and 10% testing.
