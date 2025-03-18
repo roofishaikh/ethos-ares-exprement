@@ -1,7 +1,7 @@
+import warnings
 from collections.abc import Callable
 from pathlib import Path
 
-import numpy as np
 import polars as pl
 
 from ..vocabulary import Vocabulary
@@ -24,7 +24,7 @@ class MatchAndRevise:
         """Match&Revise pattern implementation for the convenient transformations of MEDS datasets.
 
         Args:
-            prefix: Prefixes of codes will be accessible for the transform function to work with.
+            prefix: Prefixes of codes that will be passed to the transform function to work with.
             needs_resorting: If True, the resulting DataFrame will be resorted by `self.sort_cols`.
             Otherwise, the initial order will be preserved by putting the processed event back in
             the rows they originated from.
@@ -42,7 +42,7 @@ class MatchAndRevise:
 
     def __call__(
         self, fn: Callable[[pl.DataFrame, ...], pl.DataFrame]
-    ) -> Callable[[pl.DataFrame], tuple[pl.DataFrame, np.ndarray | None]]:
+    ) -> Callable[[pl.DataFrame, ...], pl.DataFrame]:
         def out_fn(
             df: pl.DataFrame, *, vocab: dict[str, int] | str | None = None, **kwargs
         ) -> pl.DataFrame:
@@ -52,25 +52,24 @@ class MatchAndRevise:
                 kwargs["vocab"] = list(vocab) if vocab is not None else None
 
             if self._needs_counts:
-                if kwargs["vocab"] is None:
+                kwargs["counts"] = None
+                if vocab is None:
                     if (counts := kwargs.get("counts", None)) is None:
-                        raise ValueError("The 'counts' argument must not be null if vocab is null!")
+                        warnings.warn("Expected `counts` is not None if `vocab` is None")
                     else:
                         if not isinstance(counts, dict):
-                            counts = pl.read_csv(counts)
-                            counts = dict(zip(counts["code"], counts["count"]))
+                            counts = dict(zip(*pl.read_csv(counts)[:, [0, 1]]))
                         kwargs["counts"] = {
                             code: counts[code]
                             for code in counts.keys()
                             if any(code.startswith(p) for p in self._prefix)
                         }
-                else:
-                    kwargs["counts"] = None
 
             df = df.with_row_index(self.index_col)
-            in_events_mask = create_prefix_or_chain(self._prefix)
-            in_df = df.filter(in_events_mask)
-            df = df.filter(~in_events_mask)
+
+            input_row_mask = create_prefix_or_chain(self._prefix)
+            in_df = df.filter(input_row_mask)
+            df = df.filter(~input_row_mask)
 
             new_events = (
                 fn(in_df, **kwargs)
@@ -93,17 +92,7 @@ class MatchAndRevise:
 
             return df.drop(self.index_col)
 
-        return MatchAndRevise.FnWrapper(out_fn, self._needs_counts)
-
-    class FnWrapper:
-        def __init__(self, fn: Callable, needs_counts: bool = False):
-            self.needs_counts = needs_counts
-            self._fn = fn
-
-        def __call__(self, df: pl.DataFrame, **kwargs) -> pl.DataFrame:
-            if self.needs_counts and "counts" not in kwargs:
-                raise ValueError(f"The 'counts' argument must be provided for {self._fn.__name__}")
-            return self._fn(df, **kwargs)
+        return out_fn
 
 
 class ScanAndAggregate:
