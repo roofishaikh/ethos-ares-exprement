@@ -52,7 +52,6 @@ class MatchAndRevise:
                 kwargs["vocab"] = list(vocab) if vocab is not None else None
 
             if self._needs_counts:
-                kwargs["counts"] = None
                 if vocab is None:
                     if (counts := kwargs.get("counts", None)) is None:
                         warnings.warn("Expected `counts` is not None if `vocab` is None")
@@ -64,6 +63,8 @@ class MatchAndRevise:
                             for code in counts.keys()
                             if any(code.startswith(p) for p in self._prefix)
                         }
+                else:
+                    kwargs["counts"] = None
 
             df = df.with_row_index(self.index_col)
 
