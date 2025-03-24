@@ -4,9 +4,9 @@ import time
 from pathlib import Path
 
 import polars as pl
-from loguru import logger
 from MEDS_transforms.mapreduce.utils import rwlock_wrap
 
+from ..inference.utils import wait_for_workers
 from ..vocabulary import Vocabulary
 
 
@@ -43,18 +43,10 @@ def run_stage(
         )
 
     if agg_to is not None:
+        agg_to = Path(agg_to)
         if worker == 1:
-            i = 0
-            while not all(out_fp.exists() for out_fp in out_fps):
-                time.sleep(1)
-                if i > 5:
-                    logger.warning(
-                        f"Waiting for {[out_fp.relative_to(in_fps[0]) for out_fp in out_fps]}"
-                    )
-                i += 1
-
-            agg_params = agg_params or {}
-            transform_fns[-1].agg(in_fps=out_fps, out_fp=agg_to, **agg_params)
+            wait_for_workers(out_fps[0].parent)
+            transform_fns[-1].agg(in_fps=out_fps, out_fp=agg_to, **(agg_params or {}))
         else:
-            while not Path(agg_to).exists():
-                time.sleep(1)
+            while not agg_to.exists():
+                time.sleep(2)

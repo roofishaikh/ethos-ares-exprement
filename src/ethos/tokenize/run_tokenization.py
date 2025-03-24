@@ -11,6 +11,7 @@ from omegaconf import DictConfig, OmegaConf
 from ..constants import STATIC_DATA_FN
 from ..constants import SpecialToken as ST
 from ..datasets import TimelineDataset
+from ..inference.utils import wait_for_workers
 from ..vocabulary import Vocabulary
 from .run_stage import run_stage
 from .utils import load_function
@@ -43,9 +44,9 @@ def main(cfg: DictConfig):
             logger.info(f"Skipping stage {stage_cfg.name}")
             continue
 
-        out_dir = output_dir / f"{i:02}_{stage_cfg.name}"
-        out_dir.mkdir(parents=True, exist_ok=True)
-        out_fps = [out_dir / fp.name for fp in in_fps]
+        stage_dir = output_dir / f"{i:02}_{stage_cfg.name}"
+        stage_dir.mkdir(parents=True, exist_ok=True)
+        out_fps = [stage_dir / fp.name for fp in in_fps]
 
         transform_fns = []
         if "transforms" in stage_cfg:
@@ -59,8 +60,7 @@ def main(cfg: DictConfig):
         run_stage(in_fps, out_fps, *transform_fns, worker=cfg.worker, **stage_cfg)
 
         # Make workers wait for lock file deletion to avoid moving on prematurely
-        while any(out_fps[0].parent.glob("*cache/locks/*.json")):
-            time.sleep(2)
+        wait_for_workers(stage_dir)
 
         if "agg_to" not in stage_cfg:
             in_fps = out_fps
